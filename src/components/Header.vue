@@ -10,7 +10,8 @@
 </template>
 
 <script>
-import {mapGetters,mapActions,mapState} from 'vuex'
+import {mapGetters,mapActions} from 'vuex'
+
 export default {
   name: 'Header',
   data () {
@@ -20,16 +21,27 @@ export default {
       clik: '点击+'
     }
   },
+  created(){
+     this.getdata();
+  },
   methods:{
     ...mapActions(['setCartNum']),
-      add () {
-        console.log();
+      add (){
         this.setCartNum(this.getCartNum+1);
+      },
+      getdata(){
+        let _this = this;
+        this.$http.post("/xinda-api/recommend/list",{}).then(function (res) {
+          _this.list_page_ajax = res.data.data.hq;
+          console.log(_this.list_page_ajax)
+        })
+        //  this.ajax.post('http://115.182.107.203:8088/xinda/xinda-api/register/sendsms',qs.stringify({cellphone: 12345678901,smsType:1,imgCode:'gb4n'})).then(function(data){
+        //   console.log(data);
+        // })
       }
   },
   computed:{
-      ...mapGetters(['getCartNum','getCart']),
-      // ...mapGetters([]),
+      ...mapGetters(['getCartNum','getCart'])
   }
 }
 </script>
